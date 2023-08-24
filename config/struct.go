@@ -1,11 +1,12 @@
 package config
 
 type Config struct {
-	Log       *LogConfig       `json:"log"`       // 日志配置
-	Ffmpeg    *FfmpegConfig    `json:"ffmpeg"`    // ffmpeg配置，给音乐视频使用的
-	Tmdb      *TmdbConfig      `json:"tmdb"`      // TMDB 配置
-	Kodi      *KodiConfig      `json:"kodi"`      // kodi配置
-	Collector *CollectorConfig `json:"collector"` // 刮削配置
+	Log       *LogConfig           `json:"log"`           // 日志配置
+	Ffmpeg    *FfmpegConfig        `json:"ffmpeg"`        // ffmpeg配置，给音乐视频使用的
+	Tmdb      *TmdbConfig          `json:"tmdb"`          // TMDB 配置
+	Subtitle  *OpensubtitlesConfig `json:"opensubtitles"` // Opensubtitles 配置
+	Kodi      *KodiConfig          `json:"kodi"`          // kodi配置
+	Collector *CollectorConfig     `json:"collector"`     // 刮削配置
 }
 
 type KodiConfig struct {
@@ -35,7 +36,14 @@ type TmdbConfig struct {
 	ImageHost string `json:"image_host"` // 图片地址
 	Language  string `json:"language"`   // 语言
 	Rating    string `json:"rating"`     // 内容分级
-	Proxy     string `json:"proxy"`      // 请求TMDB经过代理，支持 http、https、socks5、socks5h
+	Proxy     string `json:"proxy"`      // 请求经过代理，支持 http、https、socks5、socks5h
+}
+
+type OpensubtitlesConfig struct {
+	ApiHost   string   `json:"api_host"`  // Opensubtitles 接口地址
+	ApiKey    string   `json:"api_key"`   // api key
+	Languages []string `json:"languages"` // 语言
+	Proxy     string   `json:"proxy"`     // 请求经过代理，支持 http、https、socks5、socks5h
 }
 
 type CollectorConfig struct {

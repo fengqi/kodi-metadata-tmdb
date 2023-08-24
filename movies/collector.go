@@ -3,13 +3,13 @@ package movies
 import (
 	"fengqi/kodi-metadata-tmdb-cli/config"
 	"fengqi/kodi-metadata-tmdb-cli/kodi"
+	"fengqi/kodi-metadata-tmdb-cli/subtitle"
 	"fengqi/kodi-metadata-tmdb-cli/utils"
+	"github.com/fsnotify/fsnotify"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"time"
-
-	"github.com/fsnotify/fsnotify"
 )
 
 var collector *Collector
@@ -104,6 +104,18 @@ func (c *Collector) runMoviesProcess() {
 			}
 
 			_ = dir.downloadImage(detail)
+
+			cacheFile := dir.GetCacheDir() + "/" + subtitle.CacheFileSubfix
+			if dir.IsFile {
+				cacheFile = dir.GetCacheDir() + "/" + dir.OriginTitle + "." + subtitle.CacheFileSubfix
+			}
+
+			subtitles, err := subtitle.GetSubtitles(detail.Id, cacheFile)
+			if err != nil {
+				utils.Logger.ErrorF("GetSubtitles error: %v", err)
+				return
+			}
+			_ = subtitle.Download(subtitles, dir.GetFullDir())
 		}
 	}
 }

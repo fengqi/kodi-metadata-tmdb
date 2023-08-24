@@ -7,6 +7,7 @@ import (
 	"fengqi/kodi-metadata-tmdb-cli/movies"
 	"fengqi/kodi-metadata-tmdb-cli/music_videos"
 	"fengqi/kodi-metadata-tmdb-cli/shows"
+	"fengqi/kodi-metadata-tmdb-cli/subtitle"
 	"fengqi/kodi-metadata-tmdb-cli/tmdb"
 	"fengqi/kodi-metadata-tmdb-cli/utils"
 	"flag"
@@ -37,6 +38,7 @@ func main() {
 
 	utils.InitLogger(c.Log.Mode, c.Log.Level, c.Log.File)
 	tmdb.InitTmdb(c.Tmdb)
+	subtitle.InitSubtitles(c.Subtitle)
 	kodi.InitKodi(c.Kodi)
 	ffmpeg.InitFfmpeg(c.Ffmpeg)
 

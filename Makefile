@@ -1,4 +1,3 @@
-
 NAME=kodi-tmdb
 VERSION=$(shell git describe --tags || echo "dev-master")
 RELEASE_DIR=release

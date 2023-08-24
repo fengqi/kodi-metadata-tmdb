@@ -66,7 +66,7 @@ func DownloadFile(url string, filename string) error {
 
 	_, err = io.Copy(f, resp.Body)
 	if err != nil {
-		Logger.ErrorF("save content to image: %s err: %v", filename, err)
+		Logger.ErrorF("save content error: %s err: %v", filename, err)
 		return err
 	}
 

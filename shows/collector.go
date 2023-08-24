@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fengqi/kodi-metadata-tmdb-cli/config"
 	"fengqi/kodi-metadata-tmdb-cli/kodi"
+	"fengqi/kodi-metadata-tmdb-cli/subtitle"
 	"fengqi/kodi-metadata-tmdb-cli/utils"
 	"fmt"
 	"github.com/fsnotify/fsnotify"
@@ -147,16 +148,27 @@ func (c *Collector) showsFileProcess(originalName string, showsFile *File) bool 
 	utils.Logger.DebugF("episode process: season: %d episode: %d %s", showsFile.Season, showsFile.Episode, showsFile.OriginTitle)
 
 	episodeDetail, err := showsFile.getTvEpisodeDetail()
-	if err != nil || episodeDetail == nil || episodeDetail.FromCache && showsFile.NfoExist() {
+	if err != nil || episodeDetail == nil {
 		utils.Logger.WarningF("get tv episode detail err: %v", err)
 		return false
 	}
 
-	_ = showsFile.saveToNfo(episodeDetail)
+	if !episodeDetail.FromCache || !showsFile.NfoExist() {
+		_ = showsFile.saveToNfo(episodeDetail)
+		taskVal := fmt.Sprintf("%s|-|%d|-|%d", originalName, episodeDetail.SeasonNumber, episodeDetail.EpisodeNumber)
+		kodi.Rpc.AddRefreshTask(kodi.TaskRefreshEpisode, taskVal)
+	}
+
 	showsFile.downloadImage(episodeDetail)
 
-	taskVal := fmt.Sprintf("%s|-|%d|-|%d", originalName, episodeDetail.SeasonNumber, episodeDetail.EpisodeNumber)
-	kodi.Rpc.AddRefreshTask(kodi.TaskRefreshEpisode, taskVal)
+	cacheFile := showsFile.getCacheDir() + "/" + showsFile.SeasonEpisode + "." + subtitle.CacheFileSubfix
+
+	subtitles, err := subtitle.GetSubtitles(episodeDetail.Id, cacheFile)
+	if err != nil {
+		utils.Logger.ErrorF("GetSubtitles error: %v", err)
+		return false
+	}
+	_ = subtitle.Download(subtitles, showsFile.Dir)
 
 	return true
 }

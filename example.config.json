@@ -12,6 +12,12 @@
         "proxy": "",
         "rating": "US"
     },
+    "opensubtitles": {
+        "api_host": "https://api.opensubtitles.com",
+        "api_key": "HaSKP2QrF89J5xooZPU6HcZUgPfrDpFw",
+        "languages": ["zh-cn","ze","zh-tw"],
+        "proxy": ""
+    },
     "collector": {
         "watcher": true,
         "cron_seconds": 3600,
