@@ -6,6 +6,7 @@ type Config struct {
 	Tmdb      *TmdbConfig      `json:"tmdb"`      // TMDB 配置
 	Kodi      *KodiConfig      `json:"kodi"`      // kodi配置
 	Collector *CollectorConfig `json:"collector"` // 刮削配置
+	Webui     *Webui           `json:"webui"`     // webui配置
 }
 
 type KodiConfig struct {
@@ -46,4 +47,10 @@ type CollectorConfig struct {
 	MoviesDir      []string `json:"movies_dir"`       // 电影文件根目录，可多个
 	ShowsDir       []string `json:"shows_dir"`        // 电视剧文件根目录，可多个
 	MusicVideosDir []string `json:"music_videos_dir"` // 音乐视频文件根目录，可多个
+}
+
+type Webui struct {
+	Enable   bool   `json:"enable"`   // 是否开启webui
+	Listen   string `json:"listen"`   // 监听地址
+	Password string `json:"password"` // webui密码
 }

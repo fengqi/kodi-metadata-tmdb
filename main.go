@@ -9,6 +9,7 @@ import (
 	"fengqi/kodi-metadata-tmdb-cli/shows"
 	"fengqi/kodi-metadata-tmdb-cli/tmdb"
 	"fengqi/kodi-metadata-tmdb-cli/utils"
+	"fengqi/kodi-metadata-tmdb-cli/webui"
 	"flag"
 	"fmt"
 	"runtime"
@@ -41,9 +42,10 @@ func main() {
 	ffmpeg.InitFfmpeg(c.Ffmpeg)
 
 	wg := &sync.WaitGroup{}
-	wg.Add(3)
+	wg.Add(4)
 	go shows.RunCollector(c)
 	go movies.RunCollector(c)
 	go music_videos.RunCollector(c)
+	go webui.RunWebui(c)
 	wg.Wait()
 }
